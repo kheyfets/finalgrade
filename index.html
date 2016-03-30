@@ -1,0 +1,95 @@
+<html lang="en">
+  <head> 
+    <title>Final Grade</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="jquery.js"></script>
+    <script>
+    $(document).bind('mobileinit',function(){
+        $.mobile.changePage.defaults.changeHash = false;
+        $.mobile.hashListeningEnabled = false;
+        $.mobile.pushStateEnabled = false;
+    });
+    </script> 
+    <script src="jquery-mobile.js"></script>
+    <link rel="stylesheet" href="jquery-mobile.css">
+    <link rel="icon link" href="favicon.ico">
+    <style>
+      #container {
+        width: 100%;
+      }
+      form {
+        margin-right: auto;
+        margin-left: auto;
+        width: 250px;
+        padding: 20px;
+        text-align: center;
+      }    
+      .req {
+        font-size: 24px;
+      }
+      input:* {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+      }
+    </style>
+  </head>
+<body>
+
+<div data-role="page" id="container">
+  <div data-role="content">
+    <form>
+      <div data-role="fieldcontain" class="control-group">
+        <label class="control-label" for="currentGrade">Current Grade</label>
+        <div class="controls">
+          <input type="text" name="number" id="currentGrade" placeholder="">
+        </div>
+      </div>
+      <div data-role="fieldcontain" class="control-group">
+        <label class="control-label" for="wantedGrade">Wanted Grade</label>
+        <div class="controls">
+          <input type="text" name="number" id="wantedGrade" placeholder="">
+        </div>
+      </div>
+      <div data-role="fieldcontain" class="control-group">
+        <label class="control-label" for="finalWorth">Final is worth</label>
+        <div class="controls">
+          <input type="text" name="number" id="finalWorth" placeholder="">
+        </div>
+      </div>
+      <input data-theme="b" onclick="return calculateFinalReq();" id="submit" type="submit" value="Calculate!"> 
+      <div class="req">You need a(n)...</div>
+      <div id="reqGrade" class="req"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function calculateFinalReq() {
+    
+    var currentGrade = parseFloat(document.getElementById('currentGrade').value);
+    var wantedGrade = parseFloat(document.getElementById('wantedGrade').value);
+    var finalWorth = parseFloat(document.getElementById('finalWorth').value);
+    var reqGrade = Math.ceil(100 * ((wantedGrade - ((1 - (finalWorth / 100)) * currentGrade)) / finalWorth));
+
+    if ((isNaN(reqGrade)) || (reqGrade == Infinity) || (reqGrade == -Infinity)) {
+
+      document.getElementById('reqGrade').innerHTML = "<em style='color:red'>Invalid Entry, Try Again!</em>";
+
+    } else if (reqGrade < 0) {
+
+      document.getElementById('reqGrade').innerHTML = "You'll be fine..."
+
+    } else {
+
+      document.getElementById('reqGrade').innerHTML = "<strong>" + reqGrade + "%" + "</strong>";
+
+    }
+
+    return false;
+
+  }
+</script>
+</body>
+</html>
